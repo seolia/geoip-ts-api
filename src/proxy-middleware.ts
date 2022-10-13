@@ -6,7 +6,7 @@ enum IpGeoResolver {
     IPAPI = "http://ip-api.com/json/"
 };
 
-class IpGeoAPI {
+export class IpGeoAPI {
     url: IpGeoResolver;
     apiKey: string;
     counter: number;
@@ -26,7 +26,7 @@ export default class ProxyMiddleWare {
     constructor() {
         dotenv.config();
         this.apis = [new IpGeoAPI(IpGeoResolver.IPStack, process.env.IPStack_key as string, parseInt(process.env.IPStack_limit as string)),
-        new IpGeoAPI(IpGeoResolver.IPAPI, "", parseInt(process.env.IPAPI_limit as string))];
+                    new IpGeoAPI(IpGeoResolver.IPAPI, "", parseInt(process.env.IPAPI_limit as string))];
         console.debug('ProxyMiddleWare:', this.apis);
     }
 
@@ -63,6 +63,10 @@ export default class ProxyMiddleWare {
             console.error('No API available:' + this.apis);
             return Promise.reject(new Error('No API available: quota exceeded'));
         }
+    }
+
+    getApiVendors(): IpGeoAPI[] {
+        return this.apis;
     }
 
 }

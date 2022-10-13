@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import ProxyMiddleWare from './proxy-middleware';
+import ProxyMiddleWare, { IpGeoAPI } from './proxy-middleware';
 import { ApiCache } from "./cache";
 import { geoIP } from "./geo-ip";
 
@@ -44,4 +44,8 @@ const resetCache = async (req: Request, res: Response, next: NextFunction) => {
         return res.status(404).json({ message: "Cache is empty" });
 };
 
-export default { getGeoIP, cache, resetCache };
+const resetAPIs = async () => {
+    proxy.getApiVendors().forEach(api => api.counter = 0);
+};
+
+export default { getGeoIP, cache, resetCache, resetAPIs };
